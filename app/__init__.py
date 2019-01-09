@@ -1,6 +1,6 @@
 from flask import Flask
-from flask_socketio import SocketIO, emit
-from .routes import routes
+from flask_socketio import SocketIO, emit, send
+from .routes import routes, session
 from .config import Config
 
 
@@ -11,19 +11,20 @@ app.register_blueprint(routes)
 
 server = SocketIO(app)
 
-"""
-@server.on('my event')
+
+@server.on('message', namespace='/')
 def on_my_event(res):
-    print(res['data'])
+    emit('sendmessage', res, broadcast=True)
+    print("received message: %s" %str(res))
 
 
 @server.on('connect')
 def on_connect():
     print('new client')
-    emit('hello', {'data': 'Hello from server'})
+    nick = session.get('nickname') or 'none'
+    emit('joined', {'user': nick}, broadcast=True)
 
 
 @server.on('disconnect')
 def on_disconnect():
     print('bye bye client')
-"""

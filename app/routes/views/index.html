@@ -5,33 +5,17 @@
 <main class="flex flex-center fullheigth">
 
   <section class="content">
-    <div class="viewbox-chat">
-      <p class="chat-indicator">Harold se ha unido al chat</p>
-
-      <div class="message-buble">
-        <b class="message-buble-user">hespinoza01</b>
-        <p class="message-buble-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid assumenda cumque dolorum eius eligendi eos eveniet fugiat laudantium nam praesentium rerum saepe suscipit temporibus, voluptatum.</p>
-      </div>
-
-      <div class="message-buble me">
-        <b class="message-buble-user">hespinoza01</b>
-        <p class="message-buble-content">
-          Hola, esta es una pequeña prueba de la interfa para apreciar como se ve cada componente correspondiente
-        </p>
-      </div>
-
-      <p class="chat-indicator">HaroldEspinoza se ha unido al chat</p>
+    <div class="viewbox-chat" id="viewboxChat">
     </div>
 
-    <div class="viewbox-message">
-      <input class="message-content" name="nickname" id="nickname" placeholder="Escribir mensaje..." autocomplete="false">
+    <form autocomplete="off" id="message-form" class="message-box viewbox-message" method="post">
+      <input class="message-content" name="message" id="message" placeholder="Escribir mensaje..." autocomplete="false">
 
-      <form autocomplete="off" id="message" class="message-box" method="post">
-        <button class="message-send flex flex-center hide" id="btnSend">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M21.426 11.095l-17-8A1 1 0 0 0 3.03 4.242L4.969 12 3.03 19.758a.998.998 0 0 0 1.396 1.147l17-8a1 1 0 0 0 0-1.81zM5.481 18.197l1.09-4.36L13 12l-6.429-1.837-1.09-4.36L18.651 12l-13.17 6.197z" fill="#ffffff"/></svg>
-        </button>
-      </form>
-    </div>
+      <button class="message-send flex flex-center hide" id="btnSend">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M21.426 11.095l-17-8A1 1 0 0 0 3.03 4.242L4.969 12 3.03 19.758a.998.998 0 0 0 1.396 1.147l17-8a1 1 0 0 0 0-1.81zM5.481 18.197l1.09-4.36L13 12l-6.429-1.837-1.09-4.36L18.651 12l-13.17 6.197z" fill="#ffffff"/></svg>
+      </button>
+    </form>
+
   </section>
 
 </main>
@@ -39,34 +23,65 @@
 
 
 {% block script %}
-  const nickname = document.getElementById('nickname'),
+  const myNickname = '{{ nickname }}',
+        viewboxChat = document.getElementById('viewboxChat'),
+        message = document.getElementById('message'),
         btnSend = document.getElementById('btnSend'),
-        w = nickname.offsetWidth - 45;
+        messageForm = document.getElementById('message-form'),
+        w = message.offsetWidth - 45;
 
-  nickname.addEventListener('keyup', e => {
-    console.log('evento');
+  message.value = '';
+
+  const bubble = (data) => {
+    let myBubble = (data.nickname === myNickname) ? 'me' : '';
+
+    return `
+      <div class="message-buble ${myBubble}">
+        <b class="message-buble-user">${data.nickname}</b>
+        <p class="message-buble-content">${data.message}</p>
+      </div>
+    `;
+  };
+
+  const joinIndicator = (data) => {
+    return `
+      <p class="chat-indicator">${(data.user == myNickname) ? 'Has entrado al chat' : data.user+' se ha unido al chat'}</p>
+    `;
+  };
+
+  message.addEventListener('keyup', e => {
     if(e.target.value.length > 0){
       btnSend.classList.remove('hide');
-      nickname.style.width = `${w}px`;
+      message.style.width = `${w}px`;
     }else{
       btnSend.classList.add('hide');
-      nickname.style.width = "100%";
+      message.style.width = "100%";
     }
+  });
+
+  messageForm.addEventListener('submit', e => {
+    e.preventDefault();
+    console.log(message.value);
+    socket.emit('message', {nickname: myNickname, message: message.value});
+
+    message.value = '';
+    btnSend.classList.add('hide');
+    message.style.width = "100%";
   });
 
   console.log('start');
   const socket = io.connect(`http://${location.hostname}:${location.port}`);
   socket.on('connect', function(){
     console.log('connected');
-    //socket.emit('my event', {data: 'I\'m connect'})
   });
 
-  socket.on('hello', function(data){
-    console.log(data.data);
+  socket.on('joined', function(data){
+    console.log(data);
+    viewboxChat.insertAdjacentHTML('beforeend', joinIndicator(data));
   });
 
-  document.addEventListener('click', function(){
-    socket.emit('my event', {data: 'hello'})
+  socket.on('sendmessage', function(data){
+    viewboxChat.insertAdjacentHTML('beforeend', bubble(data));
   });
 
 {% endblock %}
