@@ -2,16 +2,58 @@
 
 
 {% block main %}
-<main>
+<main class="flex flex-center fullheigth">
 
-  <h1>Principal</h1>
-  <button id="btnPress">press</button>
+  <section class="content">
+    <div class="viewbox-chat">
+      <p class="chat-indicator">Harold se ha unido al chat</p>
+
+      <div class="message-buble">
+        <b class="message-buble-user">hespinoza01</b>
+        <p class="message-buble-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid assumenda cumque dolorum eius eligendi eos eveniet fugiat laudantium nam praesentium rerum saepe suscipit temporibus, voluptatum.</p>
+      </div>
+
+      <div class="message-buble me">
+        <b class="message-buble-user">hespinoza01</b>
+        <p class="message-buble-content">
+          Hola, esta es una pequeña prueba de la interfa para apreciar como se ve cada componente correspondiente
+        </p>
+      </div>
+
+      <p class="chat-indicator">HaroldEspinoza se ha unido al chat</p>
+    </div>
+
+    <div class="viewbox-message">
+      <input class="message-content" name="nickname" id="nickname" placeholder="Escribir mensaje..." autocomplete="false">
+
+      <form autocomplete="off" id="message" class="message-box" method="post">
+        <button class="message-send flex flex-center hide" id="btnSend">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M21.426 11.095l-17-8A1 1 0 0 0 3.03 4.242L4.969 12 3.03 19.758a.998.998 0 0 0 1.396 1.147l17-8a1 1 0 0 0 0-1.81zM5.481 18.197l1.09-4.36L13 12l-6.429-1.837-1.09-4.36L18.651 12l-13.17 6.197z" fill="#ffffff"/></svg>
+        </button>
+      </form>
+    </div>
+  </section>
 
 </main>
 {% endblock %}
 
 
 {% block script %}
+  const nickname = document.getElementById('nickname'),
+        btnSend = document.getElementById('btnSend'),
+        w = nickname.offsetWidth - 45;
+
+  nickname.addEventListener('keyup', e => {
+    console.log('evento');
+    if(e.target.value.length > 0){
+      btnSend.classList.remove('hide');
+      nickname.style.width = `${w}px`;
+    }else{
+      btnSend.classList.add('hide');
+      nickname.style.width = "100%";
+    }
+  });
+
   console.log('start');
   const socket = io.connect(`http://${location.hostname}:${location.port}`);
   socket.on('connect', function(){

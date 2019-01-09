@@ -34,6 +34,10 @@ body {
   justify-content: center;
 }
 
+.fullheigth{
+  height: 100vh;
+}
+
 .error-nickname{
   display: block;
   position: absolute;
@@ -84,4 +88,100 @@ body {
 .login-submit:hover{
   background-color: var(--primary);
   color: var(--neutral);
+}
+
+
+/*  index page  */
+.content{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 40vw;
+  height: 85vh;
+  padding: .75rem;
+  border-radius: 5px;
+  background-color: var(--neutral);
+  box-shadow: 0 0 25px -12.5px #3a3a3a;
+}
+
+.viewbox-chat{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 91%;
+  overflow: auto;
+}
+
+.chat-indicator{
+  text-align: center;
+  font-size: .75rem;
+  color: #b6b6b6;
+  margin-bottom: 15px;
+}
+
+.message-buble{
+  position: relative;
+  width: 95%;
+  font-size: .78rem;
+  padding: 10px;
+  background-color: #f2f2f2;
+  border-radius: 17px;
+  margin-bottom: 15px;
+}
+.message-buble-user{
+  display: block;
+  font-size: inherit;
+}
+.message-buble-content{
+  color: inherit;
+  font-size: inherit;
+}
+
+.message-buble.me{
+  background-color: var(--primary);
+  color: var(--neutral);
+  text-align: right;
+}
+
+.viewbox-message{
+  position: relative;
+  width: 100%;
+  background-color: yellow;
+}
+
+.message-content{
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 30px;
+  padding-left: .75rem;
+  padding-right: .75rem;
+  background-color: var(--neutral);
+  color: var(--primary);
+  border: none;
+  outline: none;
+  border-radius: 25px;
+  font-size: .75rem;
+  box-shadow: 0 0 15px -7.5px #3a3a3a;
+  transition: width .5s;
+  z-index: 10;
+}
+
+.message-send{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 2.5px;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--primary);
+  transform: scale(1.1);
+  transition: transform .5s;
+  z-index: 1;
+}
+.message-send.hide{
+  transform: scale(0);
 }
