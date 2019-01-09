@@ -2,7 +2,29 @@
 
 
 {% block main %}
-  <main>
-    <h1>Principal</h1>
-  </main>
+<main>
+
+  <h1>Principal</h1>
+  <button id="btnPress">press</button>
+
+</main>
+{% endblock %}
+
+
+{% block script %}
+  console.log('start');
+  const socket = io.connect(`http://${location.hostname}:${location.port}`);
+  socket.on('connect', function(){
+    console.log('connected');
+    //socket.emit('my event', {data: 'I\'m connect'})
+  });
+
+  socket.on('hello', function(data){
+    console.log(data.data);
+  });
+
+  document.addEventListener('click', function(){
+    socket.emit('my event', {data: 'hello'})
+  });
+
 {% endblock %}

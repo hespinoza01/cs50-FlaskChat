@@ -1,6 +1,18 @@
 {% extends 'layout.html' %}
 
+{% block bodyclass %}"flex flex-center"{% endblock %}
+
 
 {% block main %}
-  <h1>Login page</h1>
+<main>
+
+  <form id="login-form" class="login-form flex flex-center" method="post">
+    {% if nickerror %}
+      <div class="error-nickname">Nickname no disponible</div>
+    {% endif %}
+    <input class="login-texfield" type="text" name="nickname" id="nickname" placeholder="Nickname">
+    <button class="login-submit" id="btn-login">Ingresar</button>
+  </form>
+
+</main>
 {% endblock %}

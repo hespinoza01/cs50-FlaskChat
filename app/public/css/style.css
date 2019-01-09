@@ -1,7 +1,18 @@
+:root{
+  --primary: #4169E1;
+  --secondary: #f2f2f2;
+  --neutral: #fff;
+}
+
 *, *::after, *::before {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+}
+
+input::placeholder{
+  color: var(--primary);
+  opacity: 0.65;
 }
 
 body {
@@ -10,4 +21,67 @@ body {
   font-size: 16px;
   line-height: 18px;
   min-height: 100vh;
+  background-color: var(--secondary);
+}
+
+.flex{
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-center{
+  align-items: center;
+  justify-content: center;
+}
+
+.error-nickname{
+  display: block;
+  position: absolute;
+  top: 0;
+  padding: .65rem 1.5rem;
+  border-radius: 0 0 10px 10px;
+  background-color: tomato;
+  color: var(--neutral);
+}
+
+.login-form{
+  position: relative;
+  width: 40vw;
+  height: 70vh;
+  background-color: var(--neutral);
+  box-shadow: 0 0 25px -12.5px #3a3a3a;
+  border-radius: 5px;
+}
+
+.login-texfield{
+  background-color: var(--secondary);
+  color: var(--primary);
+  border: none;
+  font-size: 2rem;
+  width: 75%;
+  padding: .45rem .75rem;
+  border-radius: 2.5px;
+  box-shadow: inset 0 0 0 0 transparent;
+  margin-bottom: 1.25rem;
+  transition: box-shadow .25s;
+  text-align: center;
+}
+.login-texfield:focus{
+  box-shadow: inset 0 -3.5px 0 0 var(--primary);
+}
+
+.login-submit{
+  width: 45%;
+  font-size: 1.25rem;
+  padding: .35rem;
+  background-color: var(--neutral);
+  color: var(--primary);
+  border: none;
+  border-radius: 2px;
+  transition: none .5s;
+  transition-property: background-color, color;
+}
+.login-submit:hover{
+  background-color: var(--primary);
+  color: var(--neutral);
 }
